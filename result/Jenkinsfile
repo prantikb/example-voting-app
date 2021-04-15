@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    tools {
+        nodejs 'nodejs 15.11.0'
+    }
+
+    stages {    
+        stage("build") {
+            when {
+                changeset "**/result/**"
+            }
+            steps {
+                echo "Compiling result App"
+                dir("result") {
+                    sh "npm install"
+                }                        
+            }
+        }
+        stage("test") {
+            when {
+                changeset "**/result/**"
+            }
+            steps {
+                echo "Running unit tests on result app"
+                dir("result") {
+                    sh "npm test"
+                }
+            }
+        }        
+    }
+
+    post {
+        always {            
+            echo "Building multibranch pipeline for result is completed."
+        }
+    }
+}
