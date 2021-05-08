@@ -16,6 +16,7 @@ services:
       - redis
     networks:
       - instavote
+    #build: ./vote
 
   result:
     image: prantik/result:master
@@ -25,6 +26,7 @@ services:
       - instavote
     depends_on:
       - db
+    #build: ./result
 
   worker:
     image: prantik/worker:latest
@@ -33,6 +35,7 @@ services:
     depends_on:
       - db
       - redis
+    #build: ./worker
 
   redis:
     image: redis:alpine
