@@ -1,16 +1,18 @@
 pipeline {
     
-    agent {
-        docker {
-            image "maven:3.6.1-jdk-8-slim"
-            args "-v $HOME/.m2:/root/.m2"
-        }
-    }
-
-   
+    agent none   
 
     stages {    
         stage("build") {
+
+            when{
+                changeset "**/worker/**"
+            }
+
+            agent("docker") {
+                image "maven:3.6.1-jdk-8-slim"
+                args "-v $HOME/.m2:/root/.m2"
+            }
             
             steps {
                 echo "building Worker App"
@@ -20,6 +22,15 @@ pipeline {
             }
         }
         stage("test") {
+
+            when{
+                changeset "**/worker/**"
+            }
+
+            agent("docker") {
+                image "maven:3.6.1-jdk-8-slim"
+                args "-v $HOME/.m2:/root/.m2"
+            }
             
             steps {
                 echo "Running unit tests on worker app"
@@ -29,6 +40,16 @@ pipeline {
             }
         }
         stage("package") {
+
+            when{
+                branch "master"
+                changeset "**/worker/**"
+            }
+
+            agent("docker") {
+                image "maven:3.6.1-jdk-8-slim"
+                args "-v $HOME/.m2:/root/.m2"
+            }
             
             steps {
                 echo "Packaging Worker App into a jarfile"
@@ -40,6 +61,10 @@ pipeline {
         }  
         stage("docker-package") {
             agent any
+            when {
+                changeset "**/worker/**"
+                branch "master"
+            }
             steps {
                 echo "Packaging worker app with Docker"
                 script {
