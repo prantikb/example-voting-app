@@ -81,7 +81,7 @@ pipeline {
         }  
     }
 
-    stages {    
+    
         stage("vote-build") {
             when {
                 changeset "**/vote/**"
@@ -134,9 +134,9 @@ pipeline {
                 }
             }
         }        
-    }
 
-    stages {    
+
+   
         stage("result-build") {
             when {
                 changeset "**/result/**"
@@ -187,7 +187,7 @@ pipeline {
                 }
             }
         }           
-    }
+
 
     post {
         always {            
