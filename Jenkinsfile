@@ -79,7 +79,7 @@ pipeline {
                 }
             }
         }  
-    }
+    
 
     
         stage("vote-build") {
@@ -187,7 +187,7 @@ pipeline {
                 }
             }
         }           
-
+    }
 
     post {
         always {            
